@@ -1,0 +1,22 @@
+{
+  "name": "final-project-final-project-john-ryan",
+  "version": "1.0.0",
+  "description": "RSS News reader w/ user customization",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OSU-CS290-Sp18/final-project-final-project-john-ryan.git"
+  },
+  "author": "Ryan Wood, John Friter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OSU-CS290-Sp18/final-project-final-project-john-ryan/issues"
+  },
+  "homepage": "https://github.com/OSU-CS290-Sp18/final-project-final-project-john-ryan#readme",
+  "dependencies": {
+    "feedparser": "^2.2.9"
+  }
+}
