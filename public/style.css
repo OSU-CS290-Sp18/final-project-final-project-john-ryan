@@ -1,0 +1,158 @@
+body {
+  font-family: Roboto, Helvetica, sans-serif;
+  margin: 0;
+  background-color: #eee;
+}
+
+a {
+  text-decoration: none;
+}
+
+.site-title {
+  margin: 0;
+  padding: 10px 20px;
+  font-size: 30px;
+  font-weight: 100;
+  background-color: #ffa500;
+  color: #fff;
+}
+
+.navbar {
+  background-color: #fff;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 100;
+}
+
+.nav-buttons {
+  
+  display: inline-block;
+}
+
+
+
+
+.nav-buttons button {
+  background: none;  
+  border: none;   
+  margin: 0 0 0 20px;
+  padding: 0;  
+}
+
+button:hover{
+	background: #ffcc6e;
+}
+
+a {
+  color: #343434;
+}
+
+a:hover,
+a:focus {
+  color: #ffa500;
+}
+
+a:focus {
+  outline: none;
+}
+
+.navbar-button a {
+  padding: 8px 10px;
+  display: inline-block;
+}
+
+.navbar-button.active {
+  color: #ffcc6e;
+}
+
+
+
+
+#modal-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+#edit-feeds-modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1010;
+  overflow: scroll;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-dialog {
+  width: auto;
+  max-width: 600px;
+  min-width: 350px;
+  min-height: 300px;
+  margin: 40px auto;
+  background-color: #fff;
+  border-radius: 15px;
+}
+
+.modal-header {
+  position: relative;
+  padding: 10px 20px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.modal-close-button {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 10px 20px 10px;
+}
+
+.modal-footer button {
+  font-size: 20px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.modal-footer .modal-cancel-button:hover {
+  background-color: #eee;
+}
+
+.modal-footer .modal-accept-button {
+  background-color: #ffa500;
+  color: #fff;
+}
+
+.modal-footer .modal-accept-button:hover {
+  background-color: #087dde;
+}
