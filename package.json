@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/OSU-CS290-Sp18/final-project-final-project-john-ryan#readme",
   "dependencies": {
-    "feedparser": "^2.2.9"
+    "feedparser": "^2.2.9",
+    "feedreader": "^0.1.1"
   }
 }
