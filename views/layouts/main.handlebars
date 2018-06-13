@@ -24,6 +24,12 @@
     {{> header}}
 
     {{{body}}}
-	
+
+{{#if home}}
+    {{> userURL}}		
+{{else}}
+    {{> userFeed}}
+{{/if}}
+
   </body>
 </html>
