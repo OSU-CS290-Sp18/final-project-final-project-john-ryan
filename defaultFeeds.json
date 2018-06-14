@@ -1,20 +1,11 @@
 [
     {
-        "feedURL": "http://feeds.reuters.com/Reuters/domesticNews"
-    },
-    {
-        "feedURL": "http://www.nasa.gov/rss/image_of_the_day.rss"
+        "feedURL": "http://www.espn.com/espn/rss/news"
     },
     {
         "feedURL": "http://feeds.wired.com/wired/index"
     },
     {
-        "feedURL": "http://www.pbs.org/wgbh/nova/rss/nova.xml"
-    },
-    {
-        "feedURL": "http://feeds1.nytimes.com/nyt/rss/Sports"
-    },
-    {
-        "feedURL": "http://feeds.feedburner.com/TheDailyPuppy"
-    }
+        "feedURL": "http://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+    }    
 ]

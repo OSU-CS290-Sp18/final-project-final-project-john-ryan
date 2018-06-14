@@ -31,13 +31,6 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
 
-/*var allitems = [];
-defaultFeeds.forEach(function(feedstring){
-    feeder.add({
-        url: feedstring.feedURL
-    });
-});*/
-var allitems = [];
 
 app.use(function(req,res,next){
     feedsDB.updateOne(
