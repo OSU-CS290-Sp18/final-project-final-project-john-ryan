@@ -22,11 +22,11 @@
   <body>
 
     {{> header}}
-
+	{{#unless err404}}
+		{{#if home}}  {{> userURL}}  {{/if}}	
+		{{#unless home}} {{> userFeed}} {{/unless}}
+	{{/unless}}
     {{{body}}}
-{{#unless err404}}
-	{{#if home}}  {{> userURL}}  {{/if}}	
-	{{#unless home}} {{> userFeed}} {{/unless}}
-{{/unless}}
+
   </body>
 </html>

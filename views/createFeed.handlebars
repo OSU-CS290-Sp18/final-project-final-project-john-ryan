@@ -1,4 +1,9 @@
 <main class="feed-container">
-		{{> feeditem itemLink = "https://www.google.com" itemTitle = "News Story" itemDate = "6-13-18" itemContent = "This is a story on the news." itemAuthor = "nobody"}}
-
+		{{#if home}} <h1>Default Feed (Reuters, Nasa, Wired, PBS, NYTimes:Sports, Puppies)</h1>{{/if}}	
+		{{#unless home}} <h1> Your Feed </h1> {{/unless}}
+		{{#each feeds}}
+			{{#if title}}
+				{{> feeditem itemLink = link itemTitle = title itemDate = pubdate itemContent = summary itemAuthor = author}}
+			{{/if}}
+		{{/each}}
 </main>

@@ -30,8 +30,7 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
 
-app.get('/', function (req, res, next){
-    var feeds = [];
+	var feeds = [];
     var feeditems = [];
     var allitems = [];
     defaultFeeds.forEach(function(feedstring){
@@ -41,15 +40,21 @@ app.get('/', function (req, res, next){
     });
     //console.log(feeder.list());
     feeder.on('new-item', function(item){
-        console.log(item.title);
+       // console.log(item.title);
+		allitems.push(item);
     });
+
+
+app.get('/', function (req, res, next){
+    
+	console.log(allitems); 
     /*for (feed in defaultFeeds){
         db.urls.updateOne(
             {feedurl: feed},
             {upsert: true}
         );
     }*/
-    res.status(200).render('createFeed', {feeds: allitems});
+    res.status(200).render('createFeed', {feeds: allitems, home: true});
 });
 
 /*app.post(':feedURL', function(req, res, next){});*/

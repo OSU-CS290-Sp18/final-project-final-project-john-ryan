@@ -67,10 +67,19 @@ a:focus {
 
 .url-text{
 	margin: 50px 0 0 20px;
+	
+	padding-bottom: 20px;
+}
+
+.feed-container h1{
+	padding-left: 25px;
+	size: 75%;
 }
 
 .feed-text{
 	margin: 50px 0 0 20px;
+	
+	padding-bottom: 20px;
 }
 
 .feed-item{
