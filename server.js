@@ -40,7 +40,6 @@ app.use(express.static('public'));
     });
     //console.log(feeder.list());
     feeder.on('new-item', function(item){
-       // console.log(item.title);
 		allitems.push(item);
     });
 
