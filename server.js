@@ -37,7 +37,6 @@ var port = process.env.PORT || 3000;
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
@@ -63,7 +62,7 @@ app.get('/', function (req, res, next){
 app.post(':feedURL', function(req, res, next){
 
 app.get('*', function (req, res) {
-    res.status(404).render('404');
+    res.status(404).render('404',{home: false, err404: true});
 });
 
 MongoClient.connect(mongoURL, function(err, client){
