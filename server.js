@@ -16,6 +16,21 @@ var mongoURL = "mongodb://" +
 
 var mongoDB = null;
 
+var feedreader = require("feedreader");
+var request = require("request");
+
+function getFeed(url){
+    request(url, function(err, response, xml){
+        if(!err && response.statusCode == 200){
+            feedreader(xml, function(err, feed){
+                if(!err){
+                    return feed;
+                }
+            });
+        });
+    });
+}
+
 var app = express();
 var port = process.env.PORT || 3000;
 
@@ -28,13 +43,21 @@ app.use(express.static('public'));
 
 app.get('/', function (req, res, next){
     var defaultFeeds = require(defaultFeeds.json);
+    var feeds = [];
+    var feeditems = [];
     for (feed in defaultFeeds){
+        feeds.push(getFeed(feed));
+    }
+    for (feed in feeds){
+        feeditems.concat(feed.items);
+    }
+    /*for (feed in defaultFeeds){
         db.urls.updateOne(
             {feedurl: feed},
             {upsert: true}
         );
-    }
-    res.status(200).render('feed-container', {feeds: feedData});
+    }*/
+    res.status(200).render('feed-container', {feeds: feeditems});
 });
 
 app.post(':feedURL', function(req, res, next){
