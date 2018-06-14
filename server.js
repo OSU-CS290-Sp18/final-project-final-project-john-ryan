@@ -25,51 +25,48 @@ var feeder = new RssFeedEmitter();
 var app = express();
 var port = process.env.PORT || 3000;
 
+var allitems = [];
+
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 
 app.use(express.static('public'));
 
-
-app.use(function(req,res,next){
-    feedsDB.updateOne(
-        {"pageName":"default"},
-        {$set: {"feedURLs": []}},
-        {upsert: true}
-        );
-    for (feed in defaultFeeds){
-        feedsDB.updateOne(
-            {"pageName": "default"},
-            {$addToSet: {"feedURLs": defaultFeeds[feed].feedURL}},
-            {upsert: true}
-        );
-    }
-    next();
-});
-
-
+function serveFeeds(docsname){
+    return new Promise(function(resolve, reject){
+        docsname[0].feedURLs.forEach(function(feedstring){
+            feeder.add({
+                url: feedstring
+            });
+        });
+        feeder.on('new-item', function(item){
+            allitems.push(item);
+        });
+        resolve();
+    });
+}
 
 app.get('/', function (req, res, next){
+    defaultFeeds.forEach(function(feed){
+        feedsDB.updateOne(
+            {"pageName":"default"},
+            {$addToSet: {"feedURLs": feed.feedURL}},
+            {upsert: true}
+        );
+    });
     feedsDB.find({"pageName": "default"}).toArray(function(err, feedDocs){
         if(err){
-            res.status(500).send("Error fetching feeds from DB.");
+            res.status(500).send("Error fetching feeds");
         } else {
-            feedDocs[0].feedURLs.forEach(function(feedstring){
-                //console.log(feedstring);
-                feeder.add({
-                    url: feedstring
-                });
+            console.log(feedDocs);
+            serveFeeds(feedDocs).then(function(){
+                setTimeout(function(){
+                    res.status(200).render('createFeed', {feeds: allitems, home:true});
+                }, 25);
             });
-            feeder.on('new-item', function(item){
-                //console.log(item);
-                allitems.push(item);
-            });
-            console.log(allitems);
-            res.status(200).render('createFeed', {feeds: allitems, home: true});
         }
     });
-    next();
 });
 
 /*app.post(':feedURL', function(req, res, next){});*/

@@ -3,11 +3,7 @@
 		{{#unless home}} <h1> Your Feed </h1> {{/unless}}
 		{{#each feeds}}
 			{{#if title}}
-<<<<<<< HEAD
-				{{> feeditem itemLink = link itemTitle = title itemDate = pubdate itemContent = summary itemAuthor = author imageUrl = image.url}}
-=======
 				{{> feeditem itemLink = link itemTitle = title itemDate = pubdate itemContent = summary itemImage = image.url itemAuthor = author}}
->>>>>>> 226bc4c2fa49e654b5c732f748bcc0dc371e9798
 			{{/if}}
 		{{/each}}
 </main>
