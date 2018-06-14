@@ -2,7 +2,10 @@ var path = require('path');
 var express = require('express');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
-var MongoClient = require('mongodb').MongoClient;
+var defaultFeeds = require("./defaultFeeds");
+
+console.log(defaultFeeds[0].feedURL);
+/*var MongoClient = require('mongodb').MongoClient;
 
 var mongoHost = process.env.MONGO_HOST;
 var mongoPort = process.env.MONGO_PORT || '27017';
@@ -14,7 +17,7 @@ var mongoURL = "mongodb://" +
   mongoUsername + ":" + mongoPassword + "@" + mongoHost + ":" + mongoPort +
   "/" + mongoDBName;
 
-var mongoDB = null;
+var mongoDB = null;*/
 
 var feedreader = require("feedreader");
 var request = require("request");
@@ -27,7 +30,7 @@ function getFeed(url){
                     return feed;
                 }
             });
-        });
+        }
     });
 }
 
@@ -41,11 +44,12 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
 app.get('/', function (req, res, next){
-    var defaultFeeds = require(defaultFeeds.json);
     var feeds = [];
+
     var feeditems = [];
-    for (feed in defaultFeeds){
-        feeds.push(getFeed(feed));
+    for (var x = 0; x < defaultFeeds.length; x++){
+	console.log(defaultFeeds[x].feedURL);
+        feeds.push(getFeed(defaultFeeds[x].feedURL));
     }
     for (feed in feeds){
         feeditems.concat(feed.items);
@@ -56,16 +60,16 @@ app.get('/', function (req, res, next){
             {upsert: true}
         );
     }*/
-    res.status(200).render('feed-container', {feeds: feeditems});
+    res.status(200).render('createFeed', {feeds: feeditems});
 });
 
-app.post(':feedURL', function(req, res, next){
+/*app.post(':feedURL', function(req, res, next){});*/
 
 app.get('*', function (req, res) {
     res.status(404).render('404',{home: false, err404: true});
 });
 
-MongoClient.connect(mongoURL, function(err, client){
+/*MongoClient.connect(mongoURL, function(err, client){
     if(err){
         throw err;
     }
@@ -73,4 +77,8 @@ MongoClient.connect(mongoURL, function(err, client){
     app.listen(port, function () {
         console.log("== Server is listening on port", port);
     });
-});
+});*/
+app.listen(port, function () {
+        console.log("== Server is listening on port", port);
+    });
+
