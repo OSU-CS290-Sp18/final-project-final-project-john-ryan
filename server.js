@@ -4,7 +4,6 @@ var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var defaultFeeds = require("./defaultFeeds");
 
-console.log(defaultFeeds[0].feedURL);
 /*var MongoClient = require('mongodb').MongoClient;
 
 var mongoHost = process.env.MONGO_HOST;
@@ -19,20 +18,8 @@ var mongoURL = "mongodb://" +
 
 var mongoDB = null;*/
 
-var feedreader = require("feedreader");
-var request = require("request");
-
-function getFeed(url){
-    request(url, function(err, response, xml){
-        if(!err && response.statusCode == 200){
-            feedreader(xml, function(err, feed){
-                if(!err){
-                    return feed;
-                }
-            });
-        }
-    });
-}
+let RssFeedEmitter = require('rss-feed-emitter');
+let feeder = new RssFeedEmitter();
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -45,22 +32,24 @@ app.use(express.static('public'));
 
 app.get('/', function (req, res, next){
     var feeds = [];
-
     var feeditems = [];
-    for (var x = 0; x < defaultFeeds.length; x++){
-	console.log(defaultFeeds[x].feedURL);
-        feeds.push(getFeed(defaultFeeds[x].feedURL));
-    }
-    for (feed in feeds){
-        feeditems.concat(feed.items);
-    }
+    var allitems = [];
+    defaultFeeds.forEach(function(feedstring){
+        feeder.add({
+            url: feedstring.feedURL
+        });
+    });
+    //console.log(feeder.list());
+    feeder.on('new-item', function(item){
+        console.log(item.title);
+    });
     /*for (feed in defaultFeeds){
         db.urls.updateOne(
             {feedurl: feed},
             {upsert: true}
         );
     }*/
-    res.status(200).render('createFeed', {feeds: feeditems});
+    res.status(200).render('createFeed', {feeds: allitems});
 });
 
 /*app.post(':feedURL', function(req, res, next){});*/
