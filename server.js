@@ -8,14 +8,14 @@ var port = process.env.PORT || 3000;
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-/*app.get('/', function (req, res, next){
-    res.status(200).render('twitContainer', {twits: twitData});
-});*/
+app.get('/', function (req, res, next){
+    res.status(200).render('createFeed',{home: true, err404: false});
+});
 
 app.use(express.static('public'));
 
 app.get('*', function (req, res) {
-    res.status(404).render('404');
+    res.status(404).render('404',{home: false, err404: true});
 });
 
 app.listen(port, function () {

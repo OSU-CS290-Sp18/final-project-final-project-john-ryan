@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/OSU-CS290-Sp18/final-project-final-project-john-ryan#readme",
   "dependencies": {
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
     "feedparser": "^2.2.9",
     "feedreader": "^0.1.1",
+    "handlebars": "^4.0.11",
     "mongodb": "^3.0.10"
   }
 }

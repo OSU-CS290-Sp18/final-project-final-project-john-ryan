@@ -1,5 +1,6 @@
 function handleHomeFormSubmit() {
-    var input = document.getElementById("home-text-input").value.trim();
+    var untrimInput = document.getElementsByClassName("url-text-input");
+    var input = untrimInput[0].value.trim();
     if(!input){
         alert("no input entered");
     } else {
@@ -18,7 +19,8 @@ function handleHomeFormSubmit() {
 }
 
 function handleFeedFormSubmit() {
-    var input = document.getElementById("feed-text-input").value.trim();
+    var untrimInput = document.getElementsByClassName("feed-text");
+    var input = untrimInput[0].value.trim();
     if(!input){
         alert("no input entered");
     } else {
@@ -44,9 +46,9 @@ function handleFeedFormSubmit() {
 }
 
 document.getElementById("text-input").addEventListener("submit", function(event){
-    if (event.target.classList.includes("home-text-input")){
+    if (event.target.classList.contains("url-text")){
         handleHomeFormSubmit();
-    } else if (event.target.classList.includes("feed-text-input")){
+    } else if (event.target.classList.contains("feed-text")){
         handleFeedFormSubmit();
     }
 });
