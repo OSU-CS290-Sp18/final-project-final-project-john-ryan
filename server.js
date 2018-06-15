@@ -65,7 +65,7 @@ app.post('/', function(req, res){
 	sourceList = temp.concat(req.body.follow);
 
 	feedsDB.updateOne(
-		{"pageName":"feedList"},
+		{"pageName7":"feedList"},
 		{$set: {"feedURLs": []}}
 	);
 	res.status(200).redirect('back');	    	
@@ -75,16 +75,20 @@ app.post('/', function(req, res){
 app.get('/', function (req, res, next){
 //    console.log(sourceList);
       var allitems = [];
+    feedsDB.updateOne(
+        {"pageName7":"feedList"},
+        {$set: {"feedURLs":[]}}
+    );
     sourceList.forEach(function(feed){
     	feedsDB.updateOne(
-            {"pageName":"feedList"},
+            {"pageName7":"feedList"},
             {$addToSet: {"feedURLs": feed}},
             {upsert: true}
         );
     });
 
 setTimeout(function(){	
-    feedsDB.find({"pageName": "feedList"}).toArray(function(err, feedDocs){
+    feedsDB.find({"pageName7": "feedList"}).toArray(function(err, feedDocs){
         if(err){
             res.status(500).send("Error fetching feeds");
         } else {
@@ -116,7 +120,7 @@ MongoClient.connect(mongoURL, function(err, client){
         throw err;
     }
     mongoDB = client.db(mongoDBName);
-    feedsDB = mongoDB.collection("feedsLists4");
+    feedsDB = mongoDB.collection("feedsLists7");
 	
     app.listen(port, function () {
         console.log("== Server is listening on port", port);
