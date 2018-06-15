@@ -62,6 +62,7 @@ function serveFeeds(docsname, allitems){
 
 
 app.post('/', function(req, res){
+
 //	console.log(req.body);
 
 	if(req.body.follow.length > 0){
@@ -73,7 +74,9 @@ app.post('/', function(req, res){
 			{$set: {"feedURLs": []}}
 		);
 	}
-		res.status(200).redirect('back');	    	
+		res.status(200).redirect('back');    	
+
+
 });
 
 
@@ -85,6 +88,7 @@ app.get('/', function (req, res, next){
 	{"pageName":"feedList"},
 	{$set: {"feedURLs": []}}
     );
+
 
     sourceList.forEach(function(feed){
     	feedsDB.updateOne(
@@ -127,8 +131,9 @@ MongoClient.connect(mongoURL, function(err, client){
         throw err;
     }
     mongoDB = client.db(mongoDBName);
+
     feedsDB = mongoDB.collection("feedsLists99");
-	
+
     app.listen(port, function () {
         console.log("== Server is listening on port", port);
     });
