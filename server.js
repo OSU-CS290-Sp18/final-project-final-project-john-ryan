@@ -27,7 +27,6 @@ var feeder = new RssFeedEmitter();
 var app = express();
 var port = process.env.PORT || 3000;
 
-var allitems = [];
 var sourceList  = [];
 
 defaultFeeds.forEach(function(feed){
@@ -42,8 +41,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array());
 app.use(express.static('public'));
 
-function serveFeeds(docsname){
-    allitems = [];
+function serveFeeds(docsname, allitems){
+    feeder.destroy();
+    console.log(feeder.list());
     return new Promise(function(resolve, reject){
         docsname[0].feedURLs.forEach(function(feedstring){
             feeder.add({
@@ -59,8 +59,10 @@ function serveFeeds(docsname){
 
 
 app.post('/', function(req, res){
-	console.log(req.body);
-	sourceList = req.body.follow;
+//	console.log(req.body);
+	temp = [];
+	temp.push(req.body.follow);
+	sourceList = temp;
 	feedsDB.updateOne(
 		{"pageName":"feedList"},
 		{$set: {"feedURLs": []}}
@@ -70,7 +72,8 @@ app.post('/', function(req, res){
 
 
 app.get('/', function (req, res, next){
-    console.log(sourceList);
+//    console.log(sourceList);
+      var allitems = [];
     sourceList.forEach(function(feed){
         feedsDB.updateOne(
             {"pageName":"feedList"},
@@ -82,7 +85,8 @@ app.get('/', function (req, res, next){
         if(err){
             res.status(500).send("Error fetching feeds");
         } else {
-            serveFeeds(feedDocs).then(function(){
+	    console.log(feedDocs[0]);
+            serveFeeds(feedDocs, allitems).then(function(){
                 setTimeout(function(){
                     res.status(200).render('createFeed', {feeds: allitems, source: defaultFeeds});
                 }, 100);
