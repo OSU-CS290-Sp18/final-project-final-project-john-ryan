@@ -1,6 +1,6 @@
 <form id="checkList" class="source-list" method="post">
 	{{#each source}}
-		{{> feedListItem sourceName = this}}
+		{{> feedListItem sourceName = this.feedName sourceURL = this.feedURL}}
 	{{/each}}
 	<input type="submit" value="Submit">
 </form>

@@ -8,11 +8,11 @@ var upload = multer();
 
 var MongoClient = require('mongodb').MongoClient;
 
-var mongoHost = process.env.MONGO_HOST;
+var mongoHost = "classmongo.engr.oregonstate.edu";//process.env.MONGO_HOST;
 var mongoPort = process.env.MONGO_PORT || '27017';
-var mongoUsername = process.env.MONGO_USERNAME;
-var mongoPassword = process.env.MONGO_PASSWORD;
-var mongoDBName = process.env.MONGO_DB_NAME;
+var mongoUsername = "cs290_woodr";//process.env.MONGO_USERNAME;
+var mongoPassword = "Wmr112694!";//process.env.MONGO_PASSWORD;
+var mongoDBName = "cs290_woodr";//process.env.MONGO_DB_NAME;
 
 var mongoURL = "mongodb://" +
   mongoUsername + ":" + mongoPassword + "@" + mongoHost + ":" + mongoPort +
@@ -28,19 +28,22 @@ var app = express();
 var port = process.env.PORT || 3000;
 
 var allitems = [];
-var sourceList = [];
+var sourceList  = [];
 
 defaultFeeds.forEach(function(feed){
-	sourceList.push(feed.feedName);
+	sourceList.push(feed.feedURL);
 });
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(upload.array());
 app.use(express.static('public'));
 
 function serveFeeds(docsname){
+    allitems = [];
     return new Promise(function(resolve, reject){
         docsname[0].feedURLs.forEach(function(feedstring){
             feeder.add({
@@ -54,59 +57,44 @@ function serveFeeds(docsname){
     });
 }
 
-/*app.get("*", function(req,res,next){
-    console.log(req.url);
-    console.log(req.body);
-    console.log(req.statuscode);
-    next();
-});*/
+
+app.post('/', function(req, res){
+	console.log(req.body);
+	sourceList = req.body.follow;
+	feedsDB.updateOne(
+		{"pageName":"feedList"},
+		{$set: {"feedURLs": []}}
+	);
+	res.status(200).redirect('back');	    	
+});
+
 
 app.get('/', function (req, res, next){
-<<<<<<< HEAD
     console.log(sourceList);
-=======
-    allitems = [];
->>>>>>> 5720664c8da37a9f0afc4ba740a11b8a0967ce28
-    defaultFeeds.forEach(function(feed){
+    sourceList.forEach(function(feed){
         feedsDB.updateOne(
-            {"pageName":"defaultList"},
-            {$addToSet: {"feedURLs": feed.feedURL}},
+            {"pageName":"feedList"},
+            {$addToSet: {"feedURLs": feed}},
             {upsert: true}
         );
     });
-    feedsDB.find({"pageName": "defaultList"}).toArray(function(err, feedDocs){
+    feedsDB.find({"pageName": "feedList"}).toArray(function(err, feedDocs){
         if(err){
             res.status(500).send("Error fetching feeds");
         } else {
             serveFeeds(feedDocs).then(function(){
                 setTimeout(function(){
-<<<<<<< HEAD
-                    res.status(200).render('createFeed', {feeds: allitems, source: sourceList});
+                    res.status(200).render('createFeed', {feeds: allitems, source: defaultFeeds});
                 }, 100);
-=======
-                    res.status(200).render('createFeed', {feeds: allitems, home:true});
-                }, 50);
->>>>>>> 5720664c8da37a9f0afc4ba740a11b8a0967ce28
             });
         }
     });
 });
 
-<<<<<<< HEAD
-app.use(bodyParser.json()); 
-app.use(bodyParser.urlencoded({ extended: true })); 
-app.use(upload.array());
-app.use(express.static('public'));
 
 
-app.post('/', function(req, res, next){
-	console.log(req.body);
-	next();
-});
 
 /*app.post(':feedURL', function(req, res, next){});*/
-=======
->>>>>>> 5720664c8da37a9f0afc4ba740a11b8a0967ce28
 
 app.get('*', function (req, res) {
     res.status(404).render('404');
@@ -118,11 +106,9 @@ MongoClient.connect(mongoURL, function(err, client){
     }
     mongoDB = client.db(mongoDBName);
     feedsDB = mongoDB.collection("feeds");
+	
     app.listen(port, function () {
         console.log("== Server is listening on port", port);
     });
 });
-/*app.listen(port, function () {
-        console.log("== Server is listening on port", port);
-    });*/
 
