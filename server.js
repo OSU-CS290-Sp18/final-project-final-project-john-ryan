@@ -43,38 +43,49 @@ app.use(express.static('public'));
 
 function serveFeeds(docsname, allitems){
     feeder.destroy();
-    console.log(feeder.list());
+    console.log(docsname[0].feedURLs.length);        
     return new Promise(function(resolve, reject){
-        docsname[0].feedURLs.forEach(function(feedstring){
-		console.log(feedstring);
-            feeder.add({
-                url: feedstring
-            });
-        });
-        feeder.on('new-item', function(item){
-            allitems.push(item);
-        });
+	if(docsname[0].feedURLs.length > 0){
+	        docsname[0].feedURLs.forEach(function(feedstring){
+			console.log(feedstring);
+	            feeder.add({
+        	        url: feedstring
+	            });
+        	});
+	        feeder.on('new-item', function(item){
+        	    allitems.push(item);
+	        });
+	}
         resolve();
     });
 }
 
 
 app.post('/', function(req, res){
-	console.log(req.body);
-	temp = [];
-	sourceList = temp.concat(req.body.follow);
+//	console.log(req.body);
 
-	feedsDB.updateOne(
-		{"pageName":"feedList"},
-		{$set: {"feedURLs": []}}
-	);
-	res.status(200).redirect('back');	    	
+	if(req.body.follow.length > 0){
+		temp = [];
+		sourceList = temp.concat(req.body.follow);
+
+		feedsDB.updateOne(
+			{"pageName":"feedList"},
+			{$set: {"feedURLs": []}}
+		);
+	}
+		res.status(200).redirect('back');	    	
 });
 
 
 app.get('/', function (req, res, next){
 //    console.log(sourceList);
       var allitems = [];
+	
+    feedsDB.updateOne(
+	{"pageName":"feedList"},
+	{$set: {"feedURLs": []}}
+    );
+
     sourceList.forEach(function(feed){
     	feedsDB.updateOne(
             {"pageName":"feedList"},
@@ -91,7 +102,7 @@ setTimeout(function(){
 //	    console.log(feedDocs[0]);
             serveFeeds(feedDocs, allitems).then(function(){
                 setTimeout(function(){
-                    res.status(200).render('createFeed', {feeds: allitems, source: defaultFeeds});
+                    res.status(200).render('createFeed', {feeds: allitems, source: defaultFeeds, err404: false});
                 }, 1000);
             }).catch( 
 		(reason) =>{
@@ -108,7 +119,7 @@ setTimeout(function(){
 /*app.post(':feedURL', function(req, res, next){});*/
 
 app.get('*', function (req, res) {
-    res.status(404).render('404');
+    res.status(404).render('404', {err404:true});
 });
 
 MongoClient.connect(mongoURL, function(err, client){
@@ -116,7 +127,7 @@ MongoClient.connect(mongoURL, function(err, client){
         throw err;
     }
     mongoDB = client.db(mongoDBName);
-    feedsDB = mongoDB.collection("feedsLists4");
+    feedsDB = mongoDB.collection("feedsLists99");
 	
     app.listen(port, function () {
         console.log("== Server is listening on port", port);

@@ -22,7 +22,9 @@
   <body>
 
     {{> header}}
-    {{> feedList}}
+	{{#unless err404}}	
+	    {{> feedList}}
+	{{/unless}}
     {{{body}}}
 
   </body>
