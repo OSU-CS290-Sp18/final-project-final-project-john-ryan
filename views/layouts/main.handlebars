@@ -22,10 +22,7 @@
   <body>
 
     {{> header}}
-	{{#unless err404}}
-		{{#if home}}  {{> userURL}}  {{/if}}	
-		{{#unless home}} {{> userFeed}} {{/unless}}
-	{{/unless}}
+    {{> feedList}}
     {{{body}}}
 
   </body>

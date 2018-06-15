@@ -1,6 +1,5 @@
 <main class="feed-container">
-		{{#if home}} <h1>Default Feed</h1>{{/if}}	
-		{{#unless home}} <h1> Your Feed </h1> {{/unless}}
+		<h1>Your Feed</h1>		
 		{{#each feeds}}
 			{{#if title}}
 				{{> feeditem itemLink = link itemTitle = title itemDate = pubdate itemContent = summary itemImage = image.url itemAuthor = author}}
