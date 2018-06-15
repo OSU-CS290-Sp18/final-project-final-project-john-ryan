@@ -1,12 +1,28 @@
+function handleCheckBoxClick(buttonNum){
+    var request = new XMLHttpRequest();
+    request.open("POST",'/');
+    
+    var requestBody = JSON.stringify({
+        buttonID: buttonNum
+    });
+
+    request.addEventListener("load", function(event){
+        if (event.target.status != 200){
+            alert("wrong");
+        }
+    });
+}
+
 function handleHomeFormSubmit() {
     var untrimInput = document.getElementsByClassName("url-text-input");
     var input = untrimInput[0].value.trim();
+    console.log(input);
     if(!input){
         alert("no input entered");
     } else {
         var request = new XMLHttpRequest();
         
-        request.open("GET", "/public/"+input);
+        request.open("GET", "/public/"+input,false);
 
         request.addEventListener('load', function(event){
             if (!event.target.status === 200){
@@ -44,6 +60,10 @@ function handleFeedFormSubmit() {
         request.send(requestBody);
     }
 }
+
+document.getElementById("chkboxdiv").addEventListener("click", function(event){
+    handleCheckBoxClick(event.target.id);
+});
 
 document.getElementById("text-input").addEventListener("submit", function(event){
     if (event.target.classList.contains("url-text")){

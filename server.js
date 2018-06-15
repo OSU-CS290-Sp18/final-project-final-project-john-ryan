@@ -47,7 +47,42 @@ function serveFeeds(docsname){
     });
 }
 
+/*app.get("*", function(req,res,next){
+    console.log(req.url);
+    console.log(req.body);
+    console.log(req.statuscode);
+    next();
+});*/
+
+app.get('/public/:pageName', function(req,res,next){
+    allitems = [];
+    console.log(req.params.pageName);
+    feedsDB.findAndModify(
+        {"pageName":req.params.pageName},
+        [],
+        {$setOnInsert: {"pageName":req.params.pageName, "feedURLs":[]}},
+        {new: true, upsert:true},
+        function(err){ if(err){console.log("err");}}
+        )
+    setTimeout(function(){
+        feedsDB.find({"pageName":req.params.pageName}).toArray(function(err, feedDocs){
+            if(err){
+                res.status(500).send("ERRRRRRRor!");
+            } else {
+                serveFeeds(feedDocs).then(function(){
+                    setTimeout(function(){
+                        res.status(200).render('createFeed', {feeds: allitems, home:false});
+                    }, 50);
+                });
+            }
+        });
+    }, 2000);
+});
+
+/*app.post(':feedURL', function(req, res, next){});*/
+
 app.get('/', function (req, res, next){
+    allitems = [];
     defaultFeeds.forEach(function(feed){
         feedsDB.updateOne(
             {"pageName":"default"},
@@ -59,17 +94,15 @@ app.get('/', function (req, res, next){
         if(err){
             res.status(500).send("Error fetching feeds");
         } else {
-            console.log(feedDocs);
             serveFeeds(feedDocs).then(function(){
                 setTimeout(function(){
                     res.status(200).render('createFeed', {feeds: allitems, home:true});
-                }, 25);
+                }, 50);
             });
         }
     });
 });
 
-/*app.post(':feedURL', function(req, res, next){});*/
 
 app.get('*', function (req, res) {
     res.status(404).render('404',{home: false, err404: true});
