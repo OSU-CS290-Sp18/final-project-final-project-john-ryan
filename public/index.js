@@ -61,11 +61,15 @@ function handleFeedFormSubmit() {
     }
 }
 
+<<<<<<< HEAD
 document.getElementById("chkboxdiv").addEventListener("click", function(event){
     handleCheckBoxClick(event.target.id);
 });
 
 document.getElementById("text-input").addEventListener("submit", function(event){
+=======
+document.getElementById("text-input").addEventListener("click", function(event){
+>>>>>>> bc96213c0e3ae76be93da85d65815f73d2b19147
     if (event.target.classList.contains("url-text")){
         handleHomeFormSubmit();
     } else if (event.target.classList.contains("feed-text")){
