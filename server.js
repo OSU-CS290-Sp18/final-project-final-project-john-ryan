@@ -8,11 +8,11 @@ var upload = multer();
 
 var MongoClient = require('mongodb').MongoClient;
 
-var mongoHost = "classmongo.engr.oregonstate.edu";
+var mongoHost = process.env.MONGO_HOST;
 var mongoPort = process.env.MONGO_PORT || '27017';
-var mongoUsername = "cs290_woodr";
-var mongoPassword = "Wmr112694!";
-var mongoDBName = "cs290_woodr";
+var mongoUsername = process.env.MONGO_USERNAME;
+var mongoPassword = process.env.MONGO_PASSWORD;
+var mongoDBName = process.env.MONGO_DB_NAME;
 
 var mongoURL = "mongodb://" +
   mongoUsername + ":" + mongoPassword + "@" + mongoHost + ":" + mongoPort +
@@ -38,7 +38,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 
-
+app.use(express.static('public'));
 
 function serveFeeds(docsname){
     return new Promise(function(resolve, reject){
@@ -54,8 +54,19 @@ function serveFeeds(docsname){
     });
 }
 
+/*app.get("*", function(req,res,next){
+    console.log(req.url);
+    console.log(req.body);
+    console.log(req.statuscode);
+    next();
+});*/
+
 app.get('/', function (req, res, next){
+<<<<<<< HEAD
     console.log(sourceList);
+=======
+    allitems = [];
+>>>>>>> 5720664c8da37a9f0afc4ba740a11b8a0967ce28
     defaultFeeds.forEach(function(feed){
         feedsDB.updateOne(
             {"pageName":"defaultList"},
@@ -67,16 +78,21 @@ app.get('/', function (req, res, next){
         if(err){
             res.status(500).send("Error fetching feeds");
         } else {
-            console.log(feedDocs);
             serveFeeds(feedDocs).then(function(){
                 setTimeout(function(){
+<<<<<<< HEAD
                     res.status(200).render('createFeed', {feeds: allitems, source: sourceList});
                 }, 100);
+=======
+                    res.status(200).render('createFeed', {feeds: allitems, home:true});
+                }, 50);
+>>>>>>> 5720664c8da37a9f0afc4ba740a11b8a0967ce28
             });
         }
     });
 });
 
+<<<<<<< HEAD
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(upload.array());
@@ -89,6 +105,8 @@ app.post('/', function(req, res, next){
 });
 
 /*app.post(':feedURL', function(req, res, next){});*/
+=======
+>>>>>>> 5720664c8da37a9f0afc4ba740a11b8a0967ce28
 
 app.get('*', function (req, res) {
     res.status(404).render('404');
