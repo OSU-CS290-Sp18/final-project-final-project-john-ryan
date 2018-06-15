@@ -65,7 +65,7 @@ app.post('/', function(req, res){
 
 //	console.log(req.body);
 
-	if(req.body.follow.length > 0){
+	if(req.body.follow){
 		temp = [];
 		sourceList = temp.concat(req.body.follow);
 
