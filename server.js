@@ -46,6 +46,7 @@ function serveFeeds(docsname, allitems){
     console.log(feeder.list());
     return new Promise(function(resolve, reject){
         docsname[0].feedURLs.forEach(function(feedstring){
+		console.log(feedstring);
             feeder.add({
                 url: feedstring
             });
@@ -59,10 +60,10 @@ function serveFeeds(docsname, allitems){
 
 
 app.post('/', function(req, res){
-//	console.log(req.body);
+	console.log(req.body);
 	temp = [];
-	temp.push(req.body.follow);
-	sourceList = temp;
+	sourceList = temp.concat(req.body.follow);
+
 	feedsDB.updateOne(
 		{"pageName":"feedList"},
 		{$set: {"feedURLs": []}}
@@ -75,24 +76,30 @@ app.get('/', function (req, res, next){
 //    console.log(sourceList);
       var allitems = [];
     sourceList.forEach(function(feed){
-        feedsDB.updateOne(
+    	feedsDB.updateOne(
             {"pageName":"feedList"},
             {$addToSet: {"feedURLs": feed}},
             {upsert: true}
         );
     });
+
+setTimeout(function(){	
     feedsDB.find({"pageName": "feedList"}).toArray(function(err, feedDocs){
         if(err){
             res.status(500).send("Error fetching feeds");
         } else {
-	    console.log(feedDocs[0]);
+//	    console.log(feedDocs[0]);
             serveFeeds(feedDocs, allitems).then(function(){
                 setTimeout(function(){
                     res.status(200).render('createFeed', {feeds: allitems, source: defaultFeeds});
-                }, 100);
-            });
+                }, 1000);
+            }).catch( 
+		(reason) =>{
+			console.log(reason);
+	         });
         }
     });
+	}, 100);
 });
 
 
@@ -109,7 +116,7 @@ MongoClient.connect(mongoURL, function(err, client){
         throw err;
     }
     mongoDB = client.db(mongoDBName);
-    feedsDB = mongoDB.collection("feeds");
+    feedsDB = mongoDB.collection("feedsLists4");
 	
     app.listen(port, function () {
         console.log("== Server is listening on port", port);

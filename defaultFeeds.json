@@ -4,7 +4,7 @@
 	"feedName": "ESPN"
     },
     {
-        "feedURL": "http://feeds.wired.com/wired/index",
+        "feedURL": "https://www.wired.com/feed",
 	"feedName": "Wired"
     },
     {
@@ -18,9 +18,5 @@
     {
         "feedURL": "http://feeds.bbci.co.uk/news/technology/rss.xml",
 	"feedName": "BBC Tech"
-    },    
-    {
-        "feedURL": "https://mashable.com/category/rss/",
-	"feedName": "Mashable RSS"
-    }        
+    }   
 ]
