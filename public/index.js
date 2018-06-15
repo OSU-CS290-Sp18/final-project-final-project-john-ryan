@@ -45,7 +45,7 @@ function handleFeedFormSubmit() {
     }
 }
 
-document.getElementById("text-input").addEventListener("submit", function(event){
+document.getElementById("text-input").addEventListener("click", function(event){
     if (event.target.classList.contains("url-text")){
         handleHomeFormSubmit();
     } else if (event.target.classList.contains("feed-text")){

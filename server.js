@@ -6,11 +6,11 @@ var defaultFeeds = require("./defaultFeeds");
 
 var MongoClient = require('mongodb').MongoClient;
 
-var mongoHost = process.env.MONGO_HOST;
+var mongoHost = "classmongo.engr.oregonstate.edu";
 var mongoPort = process.env.MONGO_PORT || '27017';
-var mongoUsername = process.env.MONGO_USERNAME;
-var mongoPassword = process.env.MONGO_PASSWORD;
-var mongoDBName = process.env.MONGO_DB_NAME;
+var mongoUsername = "cs290_woodr";
+var mongoPassword = "Wmr112694!";
+var mongoDBName = "cs290_woodr";
 
 var mongoURL = "mongodb://" +
   mongoUsername + ":" + mongoPassword + "@" + mongoHost + ":" + mongoPort +
@@ -31,7 +31,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 
-app.use(express.static('public'));
+
 
 function serveFeeds(docsname){
     return new Promise(function(resolve, reject){
@@ -67,6 +67,13 @@ app.get('/', function (req, res, next){
             });
         }
     });
+});
+
+app.use(express.static('public'));
+
+app.get('/public/:pageName', function(req, res, next){
+	console.log(req.params.pageName);
+	res.status(200).render('createFeed', {feeds: [], home:false});
 });
 
 /*app.post(':feedURL', function(req, res, next){});*/
